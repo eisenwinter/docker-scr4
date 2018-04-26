@@ -1,6 +1,6 @@
 # docker-scr4
 
-Für SCR4 inkludiert nginx, mariadb, adminer und php (+xdebug)
+Für SCR4 inkludiert nginx, mariadb, adminer und php (+xdebug, mysql pdo und redis driver)
 
 Runterladen, entzippen, im Verzeichnis `docker-compose up`
 
@@ -13,7 +13,7 @@ das Unterverzeichnis `public` wird vom Server 'geserved'
 | MardiaDB | 3306 |
 | NginX    | 6969 |
 | Adminer  | 8080 |
-| XDebug   | 9001 |
+| XDebug   | 9000 |
 
 php.ini lässt sich unter `configs/php/php-ini-overrides.ini` anpassen
 

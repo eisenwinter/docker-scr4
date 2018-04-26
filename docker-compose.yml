@@ -1,6 +1,6 @@
 #################################
 ## SCR4 Docker Container 
-## nginx, php 7.2 (+ xdebug), php-fpm, mariadb 10.3 (and git for composer)
+## nginx, php 7.2 (+ xdebug, mysql_pdo und redis driver), php-fpm, mariadb 10.3
 ## base port 6969 (web), mariadb on 3306, xdebug on 9001 and adminer on 8080
 ## db root password: scr4
 ## default database: default
@@ -9,7 +9,6 @@
 #################################
 version: "3.1"
 services:
-
     mariadb:
       image: mariadb:10.3
       container_name: scr4-mariadb
@@ -23,7 +22,8 @@ services:
         - MYSQL_PASSWORD=scr4
       ports:
         - "3306:3306"
-
+      networks:
+        - src-dev
     webserver:
       image: nginx:alpine
       container_name: scr4-webserver
@@ -32,9 +32,9 @@ services:
           - .:/application
           - ./configs/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       ports:
-       - "6969:80"
-
-
+        - "6969:80"
+      networks:
+        - src-dev
     php-fpm:
       build: configs/php
       container_name: scr4-php-fpm
@@ -42,7 +42,8 @@ services:
       volumes:
         - .:/application
         - ./configs/php/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
-
+      networks:
+        - src-dev
     adminer:
       image: adminer
       container_name: scr4-adminer
@@ -51,3 +52,8 @@ services:
         - mariadb:db
       ports:
         - 8080:8080
+      networks:
+        - src-dev
+networks:
+    src-dev:
+        driver: bridge
